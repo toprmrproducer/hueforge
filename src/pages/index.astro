@@ -1,0 +1,416 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title="HueForge — Instant Complementary, Analogous & Triadic Color Palettes"
+	description="Free online color palette generator. Pick a hex color and instantly get complementary, analogous, and triadic palettes with RGB/HSL values and one-click copy — no signup, 100% client-side."
+>
+	<section class="text-center">
+		<h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
+			Pick a color, <span class="text-[#C9982E]">forge a palette</span>
+		</h1>
+		<p class="mx-auto mt-4 max-w-2xl text-lg text-[#5C4F3D]">
+			Pick or type a color and instantly generate a matching palette:
+			complementary, analogous, and triadic &mdash; with RGB, HSL, and
+			one-click hex copy.
+		</p>
+	</section>
+
+	<section class="mx-auto mt-10 max-w-2xl text-sm leading-relaxed text-[#8A7E68]">
+		<p>
+			Enter a hex code or use the native color picker. Everything is
+			computed instantly in your browser using plain color math &mdash;
+			nothing you pick is ever sent anywhere.
+		</p>
+	</section>
+
+	<section class="mx-auto mt-10 max-w-3xl">
+		<!-- Input row -->
+		<div
+			class="flex flex-col items-center gap-4 rounded-2xl border border-[#E8DFC8] bg-white p-6 shadow-sm sm:flex-row sm:items-end"
+		>
+			<div class="w-full sm:max-w-xs">
+				<label
+					for="hex-input"
+					class="block text-sm font-medium text-[#5C4F3D]"
+				>
+					Hex color
+				</label>
+				<input
+					id="hex-input"
+					type="text"
+					value="#C9982E"
+					spellcheck="false"
+					autocomplete="off"
+					placeholder="#C9982E"
+					class="mt-2 w-full rounded-xl border border-[#E8DFC8] bg-white px-4 py-3 font-mono text-base text-[#2B2013] placeholder:text-[#B8ABA0] focus:border-[#C9982E] focus:outline-none focus:ring-1 focus:ring-[#C9982E]"
+				/>
+			</div>
+
+			<div class="flex flex-col items-center">
+				<label
+					for="native-picker"
+					class="block text-sm font-medium text-[#5C4F3D] sm:text-center"
+				>
+					Picker
+				</label>
+				<input
+					id="native-picker"
+					type="color"
+					value="#c9982e"
+					class="mt-2 h-12 w-16 cursor-pointer rounded-lg border border-[#E8DFC8] bg-white p-1"
+				/>
+			</div>
+		</div>
+
+		<div
+			id="error-box"
+			class="mt-3 hidden rounded-xl border border-[#E3B7A0] bg-[#FBEFE9] p-3 text-sm font-medium text-[#9C4A2E]"
+		>
+			Enter a valid hex color, like #C9982E or #09C.
+		</div>
+
+		<!-- Main swatch -->
+		<div class="mt-8 overflow-hidden rounded-2xl border border-[#E8DFC8] shadow-sm">
+			<div id="main-swatch" class="h-32 w-full bg-[#C9982E]"></div>
+			<div class="flex flex-wrap items-center justify-between gap-3 bg-white p-5">
+				<div>
+					<p
+						id="main-hex"
+						class="font-[Fraunces] text-lg font-bold tracking-tight text-[#2B2013]"
+					>
+						#C9982E
+					</p>
+					<p class="mt-1 text-xs text-[#8A7E68]">
+						<span id="main-rgb">RGB(201, 152, 46)</span> &middot;
+						<span id="main-hsl">HSL(38, 63%, 48%)</span>
+					</p>
+				</div>
+				<button
+					type="button"
+					data-copy-target="main-hex"
+					class="copy-btn rounded-lg border border-[#E8DFC8] bg-white px-4 py-2 text-sm font-semibold text-[#5C4F3D] transition hover:border-[#C9982E] hover:text-[#C9982E]"
+				>
+					Copy hex
+				</button>
+			</div>
+		</div>
+
+		<!-- Complementary -->
+		<div class="mt-10">
+			<h2 class="text-sm font-semibold tracking-tight text-[#2B2013]">
+				Complementary <span class="font-normal text-[#8A7E68]">(180&deg;)</span>
+			</h2>
+			<div id="complementary-list" class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-1"></div>
+		</div>
+
+		<!-- Analogous -->
+		<div class="mt-10">
+			<h2 class="text-sm font-semibold tracking-tight text-[#2B2013]">
+				Analogous <span class="font-normal text-[#8A7E68]">(&plusmn;30&deg;)</span>
+			</h2>
+			<div id="analogous-list" class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2"></div>
+		</div>
+
+		<!-- Triadic -->
+		<div class="mt-10">
+			<h2 class="text-sm font-semibold tracking-tight text-[#2B2013]">
+				Triadic <span class="font-normal text-[#8A7E68]">(&plusmn;120&deg;)</span>
+			</h2>
+			<div id="triadic-list" class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2"></div>
+		</div>
+	</section>
+
+	<section class="mx-auto mt-16 max-w-2xl text-sm leading-relaxed text-[#8A7E68]">
+		<h2 class="text-2xl font-bold tracking-tight text-[#2B2013]">
+			How palette generation works
+		</h2>
+		<p class="mt-4">
+			HueForge converts your chosen hex color to HSL (hue, saturation,
+			lightness), then rotates the hue around the color wheel to derive
+			each palette. A <strong class="text-[#2B2013]">complementary</strong>
+			color sits directly opposite (180&deg;) for maximum contrast. An
+			<strong class="text-[#2B2013]">analogous</strong> palette takes the
+			two neighbors 30&deg; on either side for a harmonious, low-contrast
+			combination. A <strong class="text-[#2B2013]">triadic</strong>
+			palette takes two colors 120&deg; apart, forming three evenly spaced
+			hues around the wheel. Every value &mdash; hex, RGB, and HSL &mdash;
+			is computed with plain JavaScript color math directly in your
+			browser tab.
+		</p>
+		<div class="mt-6 flex flex-wrap gap-6 text-sm font-medium">
+			<a href={`${import.meta.env.BASE_URL}about`} class="text-[#C9982E] underline hover:text-[#B8860B]">About</a>
+			<a href={`${import.meta.env.BASE_URL}faq`} class="text-[#C9982E] underline hover:text-[#B8860B]">FAQ</a>
+			<a href={`${import.meta.env.BASE_URL}privacy`} class="text-[#C9982E] underline hover:text-[#B8860B]">Privacy Policy</a>
+		</div>
+	</section>
+
+	<template id="swatch-card-template">
+		<div class="overflow-hidden rounded-xl border border-[#E8DFC8] shadow-sm">
+			<div class="swatch-color h-20 w-full"></div>
+			<div class="flex items-center justify-between gap-3 bg-white p-4">
+				<div>
+					<p class="swatch-hex font-[Fraunces] text-base font-bold tracking-tight text-[#2B2013]"></p>
+					<p class="mt-1 text-xs text-[#8A7E68]">
+						<span class="swatch-rgb"></span> &middot;
+						<span class="swatch-hsl"></span>
+					</p>
+				</div>
+				<button
+					type="button"
+					class="copy-swatch-btn rounded-lg border border-[#E8DFC8] bg-white px-3 py-1.5 text-xs font-semibold text-[#5C4F3D] transition hover:border-[#C9982E] hover:text-[#C9982E]"
+				>
+					Copy
+				</button>
+			</div>
+		</div>
+	</template>
+
+	<script>
+		type RGB = { r: number; g: number; b: number };
+		type HSL = { h: number; s: number; l: number };
+
+		const hexInput = document.getElementById('hex-input') as HTMLInputElement;
+		const nativePicker = document.getElementById('native-picker') as HTMLInputElement;
+		const errorBox = document.getElementById('error-box') as HTMLDivElement;
+
+		const mainSwatch = document.getElementById('main-swatch') as HTMLDivElement;
+		const mainHex = document.getElementById('main-hex') as HTMLParagraphElement;
+		const mainRgb = document.getElementById('main-rgb') as HTMLSpanElement;
+		const mainHsl = document.getElementById('main-hsl') as HTMLSpanElement;
+
+		const complementaryList = document.getElementById(
+			'complementary-list',
+		) as HTMLDivElement;
+		const analogousList = document.getElementById('analogous-list') as HTMLDivElement;
+		const triadicList = document.getElementById('triadic-list') as HTMLDivElement;
+
+		const swatchCardTemplate = document.getElementById(
+			'swatch-card-template',
+		) as HTMLTemplateElement;
+
+		/** Escapes user-influenced text before it is ever placed via innerHTML. */
+		const escapeHtml = (str: string): string =>
+			str
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;');
+
+		/** Normalizes and validates a hex string. Accepts #abc, #aabbcc, with or without '#'. */
+		const normalizeHex = (input: string): string | null => {
+			let value = input.trim();
+			if (value.startsWith('#')) value = value.slice(1);
+
+			if (/^[0-9a-fA-F]{3}$/.test(value)) {
+				value = value
+					.split('')
+					.map((ch) => ch + ch)
+					.join('');
+			}
+
+			if (!/^[0-9a-fA-F]{6}$/.test(value)) {
+				return null;
+			}
+
+			return `#${value.toUpperCase()}`;
+		};
+
+		const hexToRgb = (hex: string): RGB => {
+			const clean = hex.replace('#', '');
+			return {
+				r: parseInt(clean.slice(0, 2), 16),
+				g: parseInt(clean.slice(2, 4), 16),
+				b: parseInt(clean.slice(4, 6), 16),
+			};
+		};
+
+		const rgbToHex = ({ r, g, b }: RGB): string => {
+			const toHex = (n: number) =>
+				Math.round(Math.min(255, Math.max(0, n)))
+					.toString(16)
+					.padStart(2, '0')
+					.toUpperCase();
+			return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+		};
+
+		const rgbToHsl = ({ r, g, b }: RGB): HSL => {
+			const rn = r / 255;
+			const gn = g / 255;
+			const bn = b / 255;
+			const max = Math.max(rn, gn, bn);
+			const min = Math.min(rn, gn, bn);
+			const delta = max - min;
+
+			let h = 0;
+			if (delta !== 0) {
+				if (max === rn) {
+					h = 60 * (((gn - bn) / delta) % 6);
+				} else if (max === gn) {
+					h = 60 * ((bn - rn) / delta + 2);
+				} else {
+					h = 60 * ((rn - gn) / delta + 4);
+				}
+			}
+			if (h < 0) h += 360;
+
+			const l = (max + min) / 2;
+			const s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+			return { h, s: s * 100, l: l * 100 };
+		};
+
+		const hslToRgb = ({ h, s, l }: HSL): RGB => {
+			const sn = s / 100;
+			const ln = l / 100;
+			const c = (1 - Math.abs(2 * ln - 1)) * sn;
+			const hp = (((h % 360) + 360) % 360) / 60;
+			const x = c * (1 - Math.abs((hp % 2) - 1));
+			let rp = 0;
+			let gp = 0;
+			let bp = 0;
+
+			if (hp >= 0 && hp < 1) {
+				rp = c; gp = x; bp = 0;
+			} else if (hp >= 1 && hp < 2) {
+				rp = x; gp = c; bp = 0;
+			} else if (hp >= 2 && hp < 3) {
+				rp = 0; gp = c; bp = x;
+			} else if (hp >= 3 && hp < 4) {
+				rp = 0; gp = x; bp = c;
+			} else if (hp >= 4 && hp < 5) {
+				rp = x; gp = 0; bp = c;
+			} else {
+				rp = c; gp = 0; bp = x;
+			}
+
+			const m = ln - c / 2;
+
+			return {
+				r: (rp + m) * 255,
+				g: (gp + m) * 255,
+				b: (bp + m) * 255,
+			};
+		};
+
+		const rotateHue = (hsl: HSL, degrees: number): HSL => ({
+			h: (((hsl.h + degrees) % 360) + 360) % 360,
+			s: hsl.s,
+			l: hsl.l,
+		});
+
+		const formatRgb = ({ r, g, b }: RGB): string =>
+			`RGB(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+
+		const formatHsl = ({ h, s, l }: HSL): string =>
+			`HSL(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
+
+		type SwatchInfo = { hex: string; rgb: RGB; hsl: HSL };
+
+		const buildSwatchInfo = (hsl: HSL): SwatchInfo => {
+			const rgb = hslToRgb(hsl);
+			return { hex: rgbToHex(rgb), rgb, hsl };
+		};
+
+		const renderSwatchCards = (container: HTMLDivElement, swatches: SwatchInfo[]) => {
+			container.innerHTML = '';
+			swatches.forEach((swatch) => {
+				const fragment = swatchCardTemplate.content.cloneNode(true) as DocumentFragment;
+
+				const colorBox = fragment.querySelector('.swatch-color') as HTMLDivElement;
+				const hexEl = fragment.querySelector('.swatch-hex') as HTMLParagraphElement;
+				const rgbEl = fragment.querySelector('.swatch-rgb') as HTMLSpanElement;
+				const hslEl = fragment.querySelector('.swatch-hsl') as HTMLSpanElement;
+				const copyBtn = fragment.querySelector('.copy-swatch-btn') as HTMLButtonElement;
+
+				colorBox.style.backgroundColor = swatch.hex;
+				// textContent only — safe even without escapeHtml, but values are
+				// machine-generated hex/rgb/hsl strings anyway, never raw user HTML.
+				// escapeHtml is still applied defensively since these strings are
+				// derived from user input (the typed hex value).
+				hexEl.textContent = escapeHtml(swatch.hex);
+				rgbEl.textContent = escapeHtml(formatRgb(swatch.rgb));
+				hslEl.textContent = escapeHtml(formatHsl(swatch.hsl));
+
+				copyBtn.addEventListener('click', () => {
+					void copyToClipboard(swatch.hex, copyBtn);
+				});
+
+				container.appendChild(fragment);
+			});
+		};
+
+		const copyToClipboard = async (text: string, btn: HTMLButtonElement) => {
+			try {
+				await navigator.clipboard.writeText(text);
+				const original = btn.textContent;
+				btn.textContent = 'Copied!';
+				setTimeout(() => {
+					btn.textContent = original;
+				}, 1200);
+			} catch {
+				// Clipboard API unavailable (e.g. insecure context); fail silently,
+				// the hex value is still visible on-screen for manual copy.
+			}
+		};
+
+		const showError = (show: boolean) => {
+			errorBox.classList.toggle('hidden', !show);
+		};
+
+		const updatePalette = (hex: string) => {
+			const rgb = hexToRgb(hex);
+			const hsl = rgbToHsl(rgb);
+
+			mainSwatch.style.backgroundColor = hex;
+			mainHex.textContent = escapeHtml(hex);
+			mainRgb.textContent = escapeHtml(formatRgb(rgb));
+			mainHsl.textContent = escapeHtml(formatHsl(hsl));
+
+			nativePicker.value = hex.toLowerCase();
+
+			const complementary = buildSwatchInfo(rotateHue(hsl, 180));
+			renderSwatchCards(complementaryList, [complementary]);
+
+			const analogousMinus = buildSwatchInfo(rotateHue(hsl, -30));
+			const analogousPlus = buildSwatchInfo(rotateHue(hsl, 30));
+			renderSwatchCards(analogousList, [analogousMinus, analogousPlus]);
+
+			const triadicMinus = buildSwatchInfo(rotateHue(hsl, -120));
+			const triadicPlus = buildSwatchInfo(rotateHue(hsl, 120));
+			renderSwatchCards(triadicList, [triadicMinus, triadicPlus]);
+		};
+
+		const handleHexInput = () => {
+			const normalized = normalizeHex(hexInput.value);
+			if (!normalized) {
+				showError(true);
+				return;
+			}
+			showError(false);
+			updatePalette(normalized);
+		};
+
+		hexInput.addEventListener('input', handleHexInput);
+
+		nativePicker.addEventListener('input', () => {
+			const normalized = normalizeHex(nativePicker.value);
+			if (!normalized) return;
+			hexInput.value = normalized;
+			showError(false);
+			updatePalette(normalized);
+		});
+
+		const mainCopyBtn = document.querySelector(
+			'.copy-btn[data-copy-target="main-hex"]',
+		) as HTMLButtonElement;
+		mainCopyBtn.addEventListener('click', () => {
+			void copyToClipboard(mainHex.textContent ?? '', mainCopyBtn);
+		});
+
+		// Initial render with the default value.
+		updatePalette(normalizeHex(hexInput.value) ?? '#C9982E');
+	</script>
+</Layout>

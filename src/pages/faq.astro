@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const faqs = [
+	{
+		q: 'Is HueForge really free?',
+		a: 'Yes. There is no account, no paywall, and no limit on how many palettes you generate. The tool is supported by lightweight advertising.',
+	},
+	{
+		q: 'Do my colors get uploaded anywhere?',
+		a: 'No. Every palette is computed locally in your browser using plain JavaScript color math. Nothing you pick ever leaves your device.',
+	},
+	{
+		q: 'What is a complementary palette?',
+		a: 'A single color sitting directly opposite your chosen color on the color wheel (180 degrees away), giving maximum contrast — great for accents and call-to-action colors.',
+	},
+	{
+		q: 'What is an analogous palette?',
+		a: 'The two neighboring colors 30 degrees on either side of your chosen hue. Analogous palettes are harmonious and low-contrast, good for calm, cohesive designs.',
+	},
+	{
+		q: 'What is a triadic palette?',
+		a: 'Two colors 120 degrees apart from your chosen hue, forming three evenly spaced colors around the wheel — a balanced, vibrant combination.',
+	},
+	{
+		q: 'Can I input any hex format?',
+		a: 'Yes. HueForge accepts 3-digit shorthand (#abc) or full 6-digit hex (#aabbcc), with or without the leading #.',
+	},
+	{
+		q: 'Does HueForge work on mobile?',
+		a: 'Yes, HueForge runs in any modern mobile browser, including the native color picker on iOS and Android.',
+	},
+];
+---
+
+<Layout
+	title="FAQ — HueForge"
+	description="Frequently asked questions about HueForge, the free browser-based color palette generator: complementary, analogous, triadic palettes, privacy, and how it works."
+	canonicalPath="/faq"
+>
+	<section class="mx-auto max-w-2xl">
+		<h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
+			Frequently asked questions
+		</h1>
+
+		<div class="mt-10 flex flex-col gap-4">
+			{
+				faqs.map((item) => (
+					<details class="group rounded-xl border border-[#E8DFC8] bg-white p-5 shadow-sm open:shadow-md">
+						<summary class="cursor-pointer list-none font-semibold text-[#2B2013] marker:content-none">
+							<span class="flex items-center justify-between gap-4">
+								{item.q}
+								<span class="shrink-0 text-[#C9982E] transition group-open:rotate-45">
+									+
+								</span>
+							</span>
+						</summary>
+						<p class="mt-3 text-sm leading-relaxed text-[#5C4F3D]">
+							{item.a}
+						</p>
+					</details>
+				))
+			}
+		</div>
+	</section>
+</Layout>
