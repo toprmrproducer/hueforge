@@ -22,3 +22,6 @@ netlify/
 
 # Netlify
 .netlify/
+
+# local tooling
+.claude/

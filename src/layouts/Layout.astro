@@ -38,42 +38,93 @@ const canonical = new URL(
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
 			rel="stylesheet"
 		/>
+
+		<style is:global>
+			/* Reserved AdSense slots: invisible until a real <ins> is dropped in.
+			   Empty placeholder ad boxes can hurt AdSense approval, so we reserve
+			   the gutter/space but render nothing visible until populated. */
+			.ad-slot:empty {
+				min-height: 0 !important;
+				border: 0 !important;
+			}
+			.ad-skyscraper {
+				position: sticky;
+				top: 120px;
+				width: 160px;
+			}
+		</style>
 	</head>
-	<body class="min-h-screen bg-[#FAF6EC] text-[#5C4F3D] antialiased">
-		<header class="border-b border-[#E8DFC8]">
-			<nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+	<body class="min-h-screen bg-[#ffffff] text-[#4a4234] antialiased">
+		<header class="border-b border-[#eae4d6]">
+			<nav class="mx-auto flex max-w-[820px] items-center justify-between px-6 py-6">
 				<a
 					href={base}
-					class="font-[Fraunces] text-xl font-bold tracking-tight text-[#2B2013]"
+					class="font-[Sora] text-xl font-extrabold tracking-tight text-[#221b10]"
 				>
-					Hue<span class="text-[#C9982E]">Forge</span>
+					Hue<span class="text-[#c9982e]">Forge</span>
 				</a>
-				<div class="flex items-center gap-6 text-sm font-medium text-[#5C4F3D]">
-					<a href={`${base}about`} class="transition hover:text-[#C9982E]">About</a>
-					<a href={`${base}faq`} class="transition hover:text-[#C9982E]">FAQ</a>
+				<div class="flex items-center gap-7 text-[15px] font-semibold text-[#4a4234]">
+					<a href={`${base}about`} class="transition hover:text-[#c9982e]">About</a>
+					<a href={`${base}faq`} class="transition hover:text-[#c9982e]">FAQ</a>
 				</div>
 			</nav>
 		</header>
 
-		<main class="mx-auto max-w-5xl px-6 py-14">
-			<slot />
-		</main>
+		<!-- Top leaderboard AdSense slot (reserved, invisible when empty) -->
+		<div
+			class="ad-slot ad-leaderboard mx-auto mt-6 w-full px-6"
+			data-ad-slot="leaderboard"
+			style="max-width:970px;min-height:0"
+		>
+			<!-- AdSense: paste responsive <ins class="adsbygoogle"> here -->
+		</div>
 
-		<footer class="mt-24 border-t border-[#E8DFC8]">
-			<div class="mx-auto max-w-5xl px-6 py-10 text-sm text-[#5C4F3D]">
-				<p>
+		<!-- Three-column shell: [left skyscraper] [820px content] [right skyscraper].
+		     Skyscrapers only appear at >=1280px in the empty gutters beside the column. -->
+		<div class="mx-auto flex w-full max-w-[1320px] items-start justify-center gap-6 px-6">
+			<aside
+				class="ad-slot ad-skyscraper hidden shrink-0 xl:block"
+				data-ad-slot="skyscraper-left"
+			>
+				<!-- AdSense: paste responsive <ins class="adsbygoogle"> here -->
+			</aside>
+
+			<main class="mx-auto w-full max-w-[820px] px-0 pt-24 pb-28 sm:px-0">
+				<slot />
+			</main>
+
+			<aside
+				class="ad-slot ad-skyscraper hidden shrink-0 xl:block"
+				data-ad-slot="skyscraper-right"
+			>
+				<!-- AdSense: paste responsive <ins class="adsbygoogle"> here -->
+			</aside>
+		</div>
+
+		<!-- Bottom in-article AdSense slot (reserved, invisible when empty) -->
+		<div
+			class="ad-slot ad-in-article mx-auto mb-4 w-full px-6"
+			data-ad-slot="in-article"
+			style="max-width:728px;min-height:0"
+		>
+			<!-- AdSense: paste responsive <ins class="adsbygoogle"> here -->
+		</div>
+
+		<footer class="mt-16 border-t border-[#eae4d6]">
+			<div class="mx-auto max-w-[820px] px-6 py-12 text-[15px] text-[#4a4234]">
+				<p class="max-w-xl">
 					Every palette is generated locally in your browser. Nothing you
 					pick is ever sent to a server.
 				</p>
-				<div class="mt-4 flex flex-wrap gap-6">
-					<a href={`${base}about`} class="hover:text-[#C9982E]">About</a>
-					<a href={`${base}privacy`} class="hover:text-[#C9982E]">Privacy Policy</a>
-					<a href={`${base}faq`} class="hover:text-[#C9982E]">FAQ</a>
+				<div class="mt-5 flex flex-wrap gap-6 font-medium">
+					<a href={`${base}about`} class="hover:text-[#c9982e]">About</a>
+					<a href={`${base}privacy`} class="hover:text-[#c9982e]">Privacy Policy</a>
+					<a href={`${base}faq`} class="hover:text-[#c9982e]">FAQ</a>
 				</div>
-				<p class="mt-4 text-[#8A7E68]">
+				<p class="mt-5 text-[#8a7e68]">
 					&copy; {new Date().getFullYear()} HueForge
 				</p>
 			</div>

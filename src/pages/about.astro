@@ -8,9 +8,9 @@ import Layout from '../layouts/Layout.astro';
 	canonicalPath="/about"
 >
 	<section class="mx-auto max-w-2xl">
-		<h1 class="text-4xl font-bold tracking-tight sm:text-5xl">About HueForge</h1>
+		<h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">About HueForge</h1>
 
-		<div class="mt-8 flex flex-col gap-6 text-base leading-relaxed text-[#5C4F3D]">
+		<div class="mt-8 flex flex-col gap-6 text-base leading-relaxed text-[#4a4234]">
 			<p>
 				HueForge does one thing: it turns a single color into a complete,
 				usable palette, entirely inside your browser. There's no account
@@ -23,7 +23,7 @@ import Layout from '../layouts/Layout.astro';
 				HueForge is exactly, only, a color palette generator &mdash; so it
 				loads fast, stays focused, and does the one job well.
 			</p>
-			<h2 class="mt-4 text-2xl font-bold tracking-tight text-[#2B2013]">
+			<h2 class="mt-4 text-2xl font-bold tracking-tight text-[#221b10]">
 				How it works
 			</h2>
 			<p>
@@ -38,11 +38,19 @@ import Layout from '../layouts/Layout.astro';
 				external color API involved.
 			</p>
 			<p>
+				You can also extract a palette straight from an image. Drop in any
+				photo and HueForge draws it onto an off-screen canvas, samples the
+				pixels, and groups them with a small k-means pass to surface the
+				dominant colors &mdash; then exports them as CSS variables, JSON, or
+				a downloadable PNG swatch strip. Like everything else, the image is
+				read locally and never uploaded.
+			</p>
+			<p>
 				Because everything happens on your device, nothing you pick is
 				ever transmitted, logged, or stored anywhere. Close the tab and
 				it's gone, exactly as if you'd never opened it.
 			</p>
-			<h2 class="mt-4 text-2xl font-bold tracking-tight text-[#2B2013]">
+			<h2 class="mt-4 text-2xl font-bold tracking-tight text-[#221b10]">
 				Why it's free
 			</h2>
 			<p>
